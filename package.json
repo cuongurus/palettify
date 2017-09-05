@@ -1,0 +1,30 @@
+{
+  "name": "palettify",
+  "version": "1.0.0",
+  "description": "Convert Palette files to RGBa json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuongurus/palettify.git"
+  },
+  "keywords": [
+    "Palette"
+  ],
+  "author": {
+    "name": "cuongurus",
+    "email": "cuongnd95@live.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cuongurus/palettify/issues"
+  },
+  "homepage": "https://github.com/cuongurus/palettify#readme",
+  "devDependencies": {
+    "line-by-line": "^0.1.5",
+    "mkdirp": "^0.5.1",
+    "pad-number": "^0.0.4"
+  }
+}
