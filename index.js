@@ -2,111 +2,55 @@
 
 const path = require('path')
 const fs = require('fs')
-const LineReader = require('line-by-line')
-const pad = require('pad-number')
-const mkdirp = require('mkdirp')
+const common = require('./lib/common')
 
-// decode Palette file to json
-let decode = function (pal, callback) {
-    var data = [];
-    var lr = new LineReader(pal);
-    lr.on('error', function (err) {
-        // 'err' contains error object
-        if (err) {
-            callback(err, null);
-        }
-    });
-
-    lr.on('line', function (line) {
-        // 'line' contains the current line without the trailing newline character.
-        line = line.trim();
-        line = line.replace(/\s+\s/g, "");
-
-        var RGBA = {
-            alpha: 1,
-            red: 0,
-            green: 0,
-            blue: 0
-        }
-
-        var raw = line.split("=");
-        var color = pad(parseInt(raw[1]).toString(2), 32);
-
-        var sub = color.match(/.{1,8}/g);
-        RGBA.alpha = (100 - parseInt(sub[0], 2)) / 100;
-        RGBA.red = parseInt(sub[1], 2);
-        RGBA.green = parseInt(sub[2], 2);
-        RGBA.blue = parseInt(sub[3], 2);
-        data.push(RGBA);
-    });
-
-    lr.on('end', function () {
-        // All lines are read, file is closed now.
-        // console.log('All lines are read, file is closed now.');
-        // console.log(data);
-        callback(null, data);
-    });
-
-}
-
-// decode and extract json file to path
-exports.extractFromFile = function (file_input, file_output, callback) {
-    var name = path.parse(file_input).name;
-    var data = {};
-    decode(file_input, (err, ret) => {
-        if (err) {
-            callback(err);
-        } else {
-            data[name] = ret;
-            var d = JSON.stringify(data, null, 4) + '\n';
-            var dir = path.parse(file_output).dir;
-            mkdirp(dir, (err) => {
-                if (err) {
-                    callback(err);
-                } else {
-                    fs.writeFile(file_output, d, 'utf-8', (err) => {
+// decode to raw data
+exports.extractRaw = function (files_input, callback) {
+    var input = path.parse(files_input);
+    if (input.ext == '') {
+        fs.readdir(files_input, (err, files) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                var data = {};
+                var i = 0;
+                files.forEach(file => {
+                    common.decode(path.join(files_input, file), (err, ret) => {
                         if (err) {
-                            callback(err);
+                            callback(err, null);
+                        } else {
+                            i++;
+                            var name = path.parse(file).name;
+                            data[name] = ret;
+                            if (i === files.length) {
+                                callback(null, data);
+                            }
                         }
                     })
-                }
-            })
-        }
-    })
-}
-exports.extractFromFolder = function (folder_input, file_output, callback) {
-    fs.readdir(folder_input, (err, files) => {
-        if (err) {
-            callback(err);
-        } else {
-            var data = {};
-            var i = 0;
-            files.forEach(file => {
-                decode(path.join(folder_input, file), (err, ret) => {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        i++;
-                        var name = path.parse(file).name;
-                        data[name] = ret;
-                        if (i === files.length) {
-                            var d = JSON.stringify(data, null, 4) + '\n';
-                            var dir = path.parse(file_output).dir;
-                            mkdirp(dir, (err) => {
-                                if (err) {
-                                    callback(err);
-                                } else {
-                                    fs.writeFile(file_output, d, 'utf-8', (err) => {
-                                        if (err) {
-                                            callback(err);
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    }
                 })
-            });
+            }
+        })
+    } else {
+        var data = {};
+        common.decode(files_input, (err, ret) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                data[input.name] = ret;
+                callback(null, data);
+            }
+        })
+    }
+}
+
+// decode and save to json file
+exports.extractToFile = function (files_input, file_output, callback) {
+    this.extractRaw(files_input, (err, ret) => {
+        if(err){
+            callback(err);
+        }else{
+            common.save(ret, file_output, callback);
         }
     })
+
 }

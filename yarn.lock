@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+commander@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
+
 line-by-line@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/line-by-line/-/line-by-line-0.1.5.tgz#19c45b59f0a80632c30b5c43a647fe15aab905c2"
