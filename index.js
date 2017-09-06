@@ -19,13 +19,13 @@ exports.extractRaw = function (files_input, callback) {
                         if (err) {
                             callback(err, null);
                         } else {
-                            i++;
                             var name = path.parse(file).name;
                             data[name] = ret;
                             if (i === files.length) {
                                 callback(null, data);
                             }
                         }
+                        i++;
                     })
                 })
             }

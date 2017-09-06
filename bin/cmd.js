@@ -11,13 +11,16 @@ program
     .option('-o, --outfile <output>', 'Write the data to this file')
     .parse(process.argv)
 
-if(program.require){
-    var require = path.join(dir, program.require);
-    var out = program.outfile || '/palette.json';
-    var outPath = path.join(dir, out);
-    palettify.extractToFile(require, outPath, (err) => {
-        if(err){
-            console.log(err);
-        }
-    })
+var inPath = dir;
+var out = program.outfile || '/palette.json';
+var outPath = path.join(dir, out);
+
+if (program.require) {
+    inPath = path.join(dir, program.require);
 }
+
+palettify.extractToFile(inPath, outPath, (err) => {
+    if (err) {
+        console.log(err);
+    }
+})
