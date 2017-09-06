@@ -16,6 +16,7 @@ exports.extractRaw = function (files_input, callback) {
                 var i = 0;
                 files.forEach(file => {
                     common.decode(path.join(files_input, file), (err, ret) => {
+                        i++;
                         if (err) {
                             callback(err, null);
                         } else {
@@ -25,7 +26,6 @@ exports.extractRaw = function (files_input, callback) {
                                 callback(null, data);
                             }
                         }
-                        i++;
                     })
                 })
             }
