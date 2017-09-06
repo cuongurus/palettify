@@ -2,11 +2,11 @@
 
 const path = require('path')
 const program = require('commander')
-const palettify = require('palettify')
+const palettify = require('wi-palettify')
 
 const dir = process.cwd();
 program
-    .version('1.0.1')
+    .version('1.0.2')
     .option('-r, --require <input>', 'A palette file or folder')
     .option('-o, --outfile <output>', 'Write the data to this file')
     .parse(process.argv)

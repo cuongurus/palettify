@@ -2,14 +2,19 @@
 Convert Palette files to RGBa json
 
 # Install
-With [npm](http://npmjs.org) do:
+NPM:
 ```
-npm install -g palettify
+npm install -g wi-palettify
+```
+
+Yarn
+```
+yarn add --save wi-palettify
 ```
 
 # Usage
 ```js
-const palettify = require('./index')
+const palettify = require('wi-palettify')
 const path = require('path')
 
 var dir = process.cwd();
