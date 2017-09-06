@@ -1,6 +1,6 @@
 {
   "name": "wi-palettify",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Convert Palette files to RGBa json",
   "main": "index.js",
   "bin": {

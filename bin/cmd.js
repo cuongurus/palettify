@@ -6,7 +6,7 @@ const palettify = require('wi-palettify')
 
 const dir = process.cwd();
 program
-    .version('1.0.2')
+    .version('1.0.3')
     .option('-r, --require <input>', 'A palette file or folder')
     .option('-o, --outfile <output>', 'Write the data to this file')
     .parse(process.argv)
